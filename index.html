@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATHAR | أَثَر - Accessories that leave a mark</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- الهيدر العلوي -->
+    <header>
+        <div class="header-top">
+            <div class="brand-mini" onclick="goHome()">
+                <!-- لوجو أثر SVG مطابق للصورة -->
+                <svg width="28" height="32" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="50,5 93,30 93,85 50,110 7,85 7,30" stroke="#F5F5F5" stroke-width="6" fill="none"/>
+                    <path d="M32 82 L50 32 L68 82" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="50" cy="66" r="6" fill="#C9A656"/>
+                </svg>
+                <span>ATHAR</span>
+            </div>
+
+            <button class="cart-btn" onclick="toggleCart()">
+                CART (<span id="cart-count">0</span>)
+            </button>
+        </div>
+
+        <!-- شريط الفئات الرئيسية (حريمي - رجالي - كابلز) -->
+        <nav class="main-categories">
+            <button class="cat-tab active" id="tab-home" onclick="goHome()">HOME</button>
+            <button class="cat-tab" id="tab-women" onclick="selectMainCategory('women')">WOMEN</button>
+            <button class="cat-tab" id="tab-men" onclick="selectMainCategory('men')">MEN</button>
+            <button class="cat-tab" id="tab-couples" onclick="selectMainCategory('couples')">COUPLES</button>
+        </nav>
+    </header>
+
+    <!-- واجهة البراند الرئيسية (Hero) -->
+    <section id="hero-section" class="hero">
+        <div class="hero-logo">
+            <svg width="110" height="125" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,5 93,30 93,85 50,110 7,85 7,30" stroke="#F5F5F5" stroke-width="6" fill="none"/>
+                <path d="M32 82 L50 32 L68 82" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="50" cy="66" r="6.5" fill="#C9A656"/>
+            </svg>
+        </div>
+        <h1 class="brand-en">A T H A R</h1>
+        <h2 class="brand-ar">أَثَــر</h2>
+        <p class="tagline">Accessories that leave a mark</p>
+    </section>
+
+    <!-- المحتوى المتغير (إما وصل حديثاً، أو الأقسام الفرعية، أو المنتجات) -->
+    <main class="container">
+        <!-- شريط التنقل (Breadcrumb) للرجوع بسهولة -->
+        <div id="breadcrumb" class="breadcrumb" style="display: none;"></div>
+
+        <h3 id="section-heading" class="section-heading">NEW ARRIVALS</h3>
+
+        <!-- شبكة عرض الأقسام (شنط، خواتم، ساعات...) -->
+        <div id="subcategories-grid" class="subcategories-grid" style="display: none;"></div>
+
+        <!-- شبكة عرض المنتجات -->
+        <div id="products-grid" class="products-grid"></div>
+    </main>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>© 2026 ATHAR | أَثَر. All rights reserved.</p>
+    </footer>
+
+    <!-- سلة المشتريات الجانبية -->
+    <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
+    <aside id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>YOUR CART</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>TOTAL:</span>
+                <span class="gold-text"><span id="cart-total">0</span> EGP</span>
+            </div>
+            <button class="whatsapp-btn" onclick="checkoutWhatsApp()">ORDER VIA WHATSAPP</button>
+        </div>
+    </aside>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
