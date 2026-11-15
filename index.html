@@ -13,7 +13,6 @@
     <header>
         <div class="header-top">
             <div class="brand-mini" onclick="goHome()">
-                <!-- لوجو أثر SVG مطابق للصورة -->
                 <svg width="28" height="32" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <polygon points="50,5 93,30 93,85 50,110 7,85 7,30" stroke="#F5F5F5" stroke-width="6" fill="none"/>
                     <path d="M32 82 L50 32 L68 82" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -27,7 +26,6 @@
             </button>
         </div>
 
-        <!-- شريط الفئات الرئيسية (حريمي - رجالي - كابلز) -->
         <nav class="main-categories">
             <button class="cat-tab active" id="tab-home" onclick="goHome()">HOME</button>
             <button class="cat-tab" id="tab-women" onclick="selectMainCategory('women')">WOMEN</button>
@@ -36,7 +34,7 @@
         </nav>
     </header>
 
-    <!-- واجهة البراند الرئيسية (Hero) -->
+    <!-- واجهة البراند الرئيسية -->
     <section id="hero-section" class="hero">
         <div class="hero-logo">
             <svg width="110" height="125" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,23 +48,26 @@
         <p class="tagline">Accessories that leave a mark</p>
     </section>
 
-    <!-- المحتوى المتغير (إما وصل حديثاً، أو الأقسام الفرعية، أو المنتجات) -->
+    <!-- المحتوى الرئيسي -->
     <main class="container">
-        <!-- شريط التنقل (Breadcrumb) للرجوع بسهولة -->
         <div id="breadcrumb" class="breadcrumb" style="display: none;"></div>
-
         <h3 id="section-heading" class="section-heading">NEW ARRIVALS</h3>
-
-        <!-- شبكة عرض الأقسام (شنط، خواتم، ساعات...) -->
         <div id="subcategories-grid" class="subcategories-grid" style="display: none;"></div>
-
-        <!-- شبكة عرض المنتجات -->
         <div id="products-grid" class="products-grid"></div>
     </main>
 
-    <!-- الفوتر -->
+    <!-- الفوتر مع السوشيال والسياسات -->
     <footer>
-        <p>© 2026 ATHAR | أَثَر. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/athar_accessories.eg?obrf=amM0YW5yY3oxNHV1&utm_source=qr" target="_blank">Instagram</a>
+            <a href="https://www.tiktok.com/@athar_accessorise_x0?_r=1&_t=ZS-9BQnVLjlaIn" target="_blank">TikTok</a>
+            <a href="https://www.facebook.com/share/19nGmr6Yw4/?mibextid=wwXIfr" target="_blank">Facebook</a>
+        </div>
+        <div class="store-policies">
+            <p>Payment: InstaPay / Cash (25% advance payment to 01125009524, remaining upon delivery)</p>
+            <p>Shipping Time: 5 to 7 days | Exchange Policy: Within 24 hours of receipt</p>
+        </div>
+        <p class="copyright">© 2026 ATHAR | أَثَر. All rights reserved.</p>
     </footer>
 
     <!-- سلة المشتريات الجانبية -->
@@ -82,6 +83,15 @@
                 <span>TOTAL:</span>
                 <span class="gold-text"><span id="cart-total">0</span> EGP</span>
             </div>
+            
+            <!-- نموذج إدخال بيانات العميل -->
+            <div class="checkout-form">
+                <h4>Shipping Details</h4>
+                <input type="text" id="cust-name" placeholder="Full Name" required>
+                <input type="tel" id="cust-phone" placeholder="Phone Number" required>
+                <input type="text" id="cust-address" placeholder="Address (City, Street, Building)" required>
+            </div>
+
             <button class="whatsapp-btn" onclick="checkoutWhatsApp()">ORDER VIA WHATSAPP</button>
         </div>
     </aside>

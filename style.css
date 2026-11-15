@@ -23,7 +23,6 @@ body {
     flex-direction: column;
 }
 
-/* Header */
 header {
     background-color: var(--bg-main);
     border-bottom: 1px solid var(--border-color);
@@ -67,7 +66,6 @@ header {
     color: #000;
 }
 
-/* Navigation Tabs */
 .main-categories {
     display: flex;
     justify-content: center;
@@ -92,7 +90,6 @@ header {
     border-bottom-color: var(--gold);
 }
 
-/* Hero Section */
 .hero {
     text-align: center;
     padding: 50px 20px 30px;
@@ -122,7 +119,6 @@ header {
     letter-spacing: 1px;
 }
 
-/* Main Container */
 .container {
     padding: 20px 5% 60px;
     flex: 1;
@@ -152,7 +148,6 @@ header {
     text-transform: uppercase;
 }
 
-/* Subcategories Grid (كروت الأقسام بالصور) */
 .subcategories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -177,26 +172,19 @@ header {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    filter: brightness(0.85);
-    transition: 0.3s;
-}
-
-.subcat-card:hover img {
-    filter: brightness(1);
 }
 
 .subcat-title {
     padding: 15px 10px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
     color: var(--text-white);
+    font-weight: 500;
 }
 
-/* Products Grid (مطابق لشكل الكروت في الصورة) */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* عمودين على الموبايل زي الصورة بالظبط */
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px;
 }
 
@@ -223,6 +211,26 @@ header {
     object-fit: cover;
     margin-bottom: 12px;
     background-color: #222;
+}
+
+/* معاينة الصور المتعددة للمنتج لو موجودة */
+.product-thumbnails {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.product-thumbnails img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.product-thumbnails img:hover {
+    border-color: var(--gold);
 }
 
 .product-name {
@@ -257,17 +265,46 @@ header {
     font-weight: 600;
 }
 
-/* Footer */
+/* Footer Styling */
 footer {
     text-align: center;
-    padding: 25px;
+    padding: 30px 20px;
     border-top: 1px solid var(--border-color);
+    background-color: var(--bg-card);
     color: var(--text-gray);
     font-size: 12px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--text-white);
+}
+
+.store-policies {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #bbb;
+}
+
+.copyright {
     letter-spacing: 1px;
 }
 
-/* Cart Sidebar */
+/* Cart Sidebar & Form */
 .cart-overlay {
     position: fixed;
     inset: 0;
@@ -322,15 +359,15 @@ footer {
 .cart-items {
     flex: 1;
     overflow-y: auto;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .cart-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     border-bottom: 1px solid #222;
 }
 
@@ -355,15 +392,42 @@ footer {
 .cart-total-row {
     display: flex;
     justify-content: space-between;
-    font-size: 15px;
-    margin-bottom: 15px;
-    padding-top: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-top: 8px;
     border-top: 1px solid var(--border-color);
 }
 
 .gold-text {
     color: var(--gold);
     font-weight: 600;
+}
+
+.checkout-form {
+    margin-bottom: 12px;
+}
+
+.checkout-form h4 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: var(--gold);
+}
+
+.checkout-form input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    background: #1a1a1a;
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.checkout-form input:focus {
+    border-color: var(--gold);
+    outline: none;
 }
 
 .whatsapp-btn {
@@ -376,4 +440,3 @@ footer {
     letter-spacing: 1px;
     cursor: pointer;
 }
-
