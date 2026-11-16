@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATHAR | أَثَر - Accessories that leave a mark</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* تنسيق نافذة معاينة المنتج (Modal) */
+        .prod-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;
+        }
+        .prod-modal-box {
+            background: #1a1a1a; border: 1px solid #d4af37; border-radius: 14px; max-width: 420px; width: 100%;
+            padding: 25px; text-align: center; position: relative; color: #fff; animation: fadeIn 0.25s ease;
+        }
+        .close-modal {
+            position: absolute; top: 12px; right: 18px; font-size: 28px; color: #aaa; cursor: pointer;
+        }
+        .close-modal:hover { color: #d4af37; }
+        .modal-img { width: 100%; max-height: 280px; object-fit: contain; border-radius: 10px; background: #111; margin-bottom: 15px; }
+        .modal-views {
+            display: inline-block; background: #262626; color: #d4af37; padding: 6px 14px;
+            border-radius: 20px; font-size: 13px; border: 1px solid #444; margin: 10px 0; font-weight: 600;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    </style>
 </head>
 <body>
 
@@ -56,19 +77,18 @@
         <div id="products-grid" class="products-grid"></div>
     </main>
 
-    <!-- الفوتر مع السوشيال والسياسات -->
-    <footer>
-        <div class="social-links">
-            <a href="https://www.instagram.com/athar_accessories.eg?obrf=amM0YW5yY3oxNHV1&utm_source=qr" target="_blank">Instagram</a>
-            <a href="https://www.tiktok.com/@athar_accessorise_x0?_r=1&_t=ZS-9BQnVLjlaIn" target="_blank">TikTok</a>
-            <a href="https://www.facebook.com/share/19nGmr6Yw4/?mibextid=wwXIfr" target="_blank">Facebook</a>
+    <!-- نافذة معاينة المنتج والمشاهدات -->
+    <div id="product-modal" class="prod-modal-overlay" onclick="closeProductModal(event)">
+        <div class="prod-modal-box" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <img id="modal-prod-img" src="" alt="" class="modal-img">
+            <h3 id="modal-prod-name" style="margin: 5px 0; color: #fff;"></h3>
+            <div id="modal-prod-colors" style="margin: 8px 0;"></div>
+            <div class="modal-views">👁️ عدد المشاهدات: <span id="modal-prod-views">0</span> مشاهدة</div>
+            <div id="modal-prod-price" style="color: #d4af37; font-size: 20px; font-weight: bold; margin: 10px 0;"></div>
+            <button id="modal-add-btn" class="add-to-cart-btn" style="background:#d4af37; color:#000; border:none; padding:12px; width:100%; border-radius:8px; font-weight:bold; cursor:pointer;">ADD TO CART</button>
         </div>
-        <div class="store-policies">
-            <p>Payment: InstaPay / Cash (25% advance payment to 01125009524, remaining upon delivery)</p>
-            <p>Shipping Time: 5 to 7 days | Exchange Policy: Within 24 hours of receipt</p>
-        </div>
-        <p class="copyright">© 2026 ATHAR | أَثَر. All rights reserved.</p>
-    </footer>
+    </div>
 
     <!-- سلة المشتريات الجانبية -->
     <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
@@ -83,21 +103,67 @@
                 <span>TOTAL:</span>
                 <span class="gold-text"><span id="cart-total">0</span> EGP</span>
             </div>
-            
-            <!-- نموذج إدخال بيانات العميل -->
             <div class="checkout-form">
                 <h4>Shipping Details</h4>
                 <input type="text" id="cust-name" placeholder="Full Name" required>
                 <input type="tel" id="cust-phone" placeholder="Phone Number" required>
                 <input type="text" id="cust-address" placeholder="Address (City, Street, Building)" required>
             </div>
-
             <button class="whatsapp-btn" onclick="checkoutWhatsApp()">ORDER VIA WHATSAPP</button>
         </div>
     </aside>
 
+    <!-- قسم السياسات والتوصيل (عربي منسق لوحده) -->
+    <section dir="rtl" style="background: #181818; padding: 40px 20px; border-top: 1px solid #333; color: #fff; margin-top: 40px; font-family: 'Cairo', sans-serif;">
+        <div style="max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
+                <h3 style="color: #d4af37; margin-top: 0;">🚚 الشحن والتوصيل</h3>
+                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
+                    نقدم خدمة شحن سريعة لجميع محافظات مصر. يستغرق وقت التوصيل من <strong>5 إلى 7 أيام عمل</strong> من تأكيد الأوردر.
+                </p>
+            </div>
+            <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
+                <h3 style="color: #d4af37; margin-top: 0;">💳 تفاصيل الدفع والطلبات</h3>
+                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
+                    نظام الطلب يتطلب تحويل <strong>عربون 25%</strong> عبر إنستا باي أو محفظة كاش على الرقم: <span style="color:#d4af37; font-weight:bold; direction:ltr; display:inline-block;">01125009524</span> وباقي المبلغ عند الاستلام.
+                </p>
+            </div>
+            <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
+                <h3 style="color: #d4af37; margin-top: 0;">🔄 سياسة الاستبدال</h3>
+                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
+                    ضمان رضا العملاء أولوية في أثر؛ يتيح المتجر إمكانية استبدال المنتجات خلال <strong>24 ساعة</strong> من تاريخ الاستلام.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم آراء العملاء -->
+    <section dir="rtl" style="background: #121212; padding: 40px 20px; text-align: center; border-top: 1px solid #222; font-family: 'Cairo', sans-serif;">
+        <h2 style="color: #d4af37; margin-bottom: 30px;">⭐ آراء عملائنا في براند أثر</h2>
+        <div style="max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;" id="reviews-container">
+            <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #333; text-align: right;">
+                <p style="color: #ddd; font-style: italic; font-size: 15px;">"انتظروا آراء عملائنا المميزين قريبًا جداً هنا ❤️"</p>
+                <span style="color: #d4af37; font-weight: bold; font-size: 14px;">— براند أثر</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer style="background: #0d0d0d; padding: 30px 20px; text-align: center; border-top: 1px solid #222; color: #888;">
+        <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 25px; align-items: center; flex-wrap: wrap;">
+            <a href="https://instagram.com/athar_accessories.eg" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                📸 Instagram (@athar_accessories.eg)
+            </a>
+            <a href="https://tiktok.com/@athar_accessorise_x0" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                🎬 TikTok (@athar_accessorise_x0)
+            </a>
+            <a href="https://wa.me/201125009524" target="_blank" style="color: #28a745; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                💬 WhatsApp (01125009524)
+            </a>
+        </div>
+        <p style="font-size: 13px; margin: 0;">©️ 2026 ATHAR | أَثَر. All rights reserved.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
-
-
