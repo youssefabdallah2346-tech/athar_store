@@ -7,33 +7,37 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* تنسيق نافذة معاينة المنتج (Modal) */
-        .prod-modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;
-        }
-        .prod-modal-box {
-            background: #1a1a1a; border: 1px solid #d4af37; border-radius: 14px; max-width: 420px; width: 100%;
-            padding: 25px; text-align: center; position: relative; color: #fff; animation: fadeIn 0.25s ease;
-        }
-        .close-modal {
-            position: absolute; top: 12px; right: 18px; font-size: 28px; color: #aaa; cursor: pointer;
-        }
+        .prod-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .prod-modal-box { background: #1a1a1a; border: 1px solid #d4af37; border-radius: 14px; max-width: 420px; width: 100%; padding: 25px; text-align: center; position: relative; color: #fff; font-family:'Cairo',sans-serif; }
+        .close-modal { position: absolute; top: 12px; right: 18px; font-size: 28px; color: #aaa; cursor: pointer; }
         .close-modal:hover { color: #d4af37; }
-        .modal-img { width: 100%; max-height: 280px; object-fit: contain; border-radius: 10px; background: #111; margin-bottom: 15px; }
-        .modal-views {
-            display: inline-block; background: #262626; color: #d4af37; padding: 6px 14px;
-            border-radius: 20px; font-size: 13px; border: 1px solid #444; margin: 10px 0; font-weight: 600;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        /* ضبط الصورة لتكون مربعة وتظهر بالكامل بدون أي قص */
+        .square-img-box { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 8px; background: #111; display: flex; align-items: center; justify-content: center; position: relative; border: 1px solid #333; }
+        .square-img-box img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .account-modal, .wishlist-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:3000; justify-content:center; align-items:center; }
+        .account-box, .wishlist-box { background:#1a1a1a; border:1px solid #d4af37; padding:25px; border-radius:12px; width:100%; max-width:400px; color:#fff; text-align:right; font-family:'Cairo',sans-serif; position:relative; }
+        .account-box input { width:100%; padding:10px; margin:8px 0; background:#252525; border:1px solid #444; color:#fff; border-radius:6px; }
+        
+        .social-icons-container { display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 15px; }
+        .social-circle { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #fff; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .social-circle:hover { transform: scale(1.1); }
+        .sc-tiktok { background: #000000; border: 1px solid #333; }
+        .sc-whatsapp { background: #128c7e; }
+        .sc-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #df5950 45%, #c62a88 60%, #8a2be2 90%); }
+        .sc-facebook { background: #1877f2; }
+
+        .coming-soon-box { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #181818; color: #d4af37; font-weight: bold; font-size: 15px; border: 2px dashed #444; border-radius: 8px; text-align: center; padding: 10px; }
+        
+        .home-section-title { color: #d4af37; font-family: 'Cairo', sans-serif; font-size: 22px; border-bottom: 2px solid #333; padding-bottom: 8px; margin: 30px 0 15px 0; text-align: right; }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر العلوي -->
     <header>
         <div class="header-top">
-            <div class="brand-mini" onclick="goHome()">
+            <div class="brand-mini" onclick="goHome()" style="cursor:pointer;">
                 <svg width="28" height="32" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <polygon points="50,5 93,30 93,85 50,110 7,85 7,30" stroke="#F5F5F5" stroke-width="6" fill="none"/>
                     <path d="M32 82 L50 32 L68 82" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,9 +46,11 @@
                 <span>ATHAR</span>
             </div>
 
-            <button class="cart-btn" onclick="toggleCart()">
-                CART (<span id="cart-count">0</span>)
-            </button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button onclick="toggleAccountModal()" style="background:transparent; border:1px solid #d4af37; color:#d4af37; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; font-family:'Cairo';">👤 حسابي</button>
+                <button onclick="toggleWishlistModal()" style="background:transparent; border:1px solid #d4af37; color:#d4af37; padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; font-family:'Cairo';">❤️ المفضلة (<span id="wishlist-count">0</span>)</button>
+                <button class="cart-btn" onclick="toggleCart()">CART (<span id="cart-count">0</span>)</button>
+            </div>
         </div>
 
         <nav class="main-categories">
@@ -55,7 +61,6 @@
         </nav>
     </header>
 
-    <!-- واجهة البراند الرئيسية -->
     <section id="hero-section" class="hero">
         <div class="hero-logo">
             <svg width="110" height="125" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +74,6 @@
         <p class="tagline">Accessories that leave a mark</p>
     </section>
 
-    <!-- المحتوى الرئيسي -->
     <main class="container">
         <div id="breadcrumb" class="breadcrumb" style="display: none;"></div>
         <h3 id="section-heading" class="section-heading">NEW ARRIVALS</h3>
@@ -77,20 +81,55 @@
         <div id="products-grid" class="products-grid"></div>
     </main>
 
-    <!-- نافذة معاينة المنتج والمشاهدات -->
+    <!-- Modal تفاصيل المنتج وتقييم النجوم -->
     <div id="product-modal" class="prod-modal-overlay" onclick="closeProductModal(event)">
         <div class="prod-modal-box" onclick="event.stopPropagation()">
             <span class="close-modal" onclick="closeProductModal()">&times;</span>
-            <img id="modal-prod-img" src="" alt="" class="modal-img">
+            <div class="square-img-box" style="margin-bottom: 15px;">
+                <img id="modal-prod-img" src="" alt="">
+            </div>
             <h3 id="modal-prod-name" style="margin: 5px 0; color: #fff;"></h3>
             <div id="modal-prod-colors" style="margin: 8px 0;"></div>
-            <div class="modal-views">👁️ عدد المشاهدات: <span id="modal-prod-views">0</span> مشاهدة</div>
+            
+            <div style="margin: 12px 0; background: #222; padding: 12px; border-radius: 8px; border: 1px solid #444;">
+                <p style="margin: 0 0 5px 0; font-size: 13px; color: #d4af37; font-weight: bold;">تقييمك للمنتج:</p>
+                <div id="star-rating" style="font-size: 24px; cursor: pointer; letter-spacing: 5px;">
+                    <span onclick="rateProduct(1)" style="color: #f5c518;" id="star-1">⭐</span>
+                    <span onclick="rateProduct(2)" style="color: #f5c518;" id="star-2">⭐</span>
+                    <span onclick="rateProduct(3)" style="color: #f5c518;" id="star-3">⭐</span>
+                    <span onclick="rateProduct(4)" style="color: #f5c518;" id="star-4">⭐</span>
+                    <span onclick="rateProduct(5)" style="color: #f5c518;" id="star-5">⭐</span>
+                </div>
+                <p id="rating-msg" style="font-size: 12px; color: #aaa; margin: 5px 0 0 0;">شكراً لتقييمك!</p>
+            </div>
+
             <div id="modal-prod-price" style="color: #d4af37; font-size: 20px; font-weight: bold; margin: 10px 0;"></div>
             <button id="modal-add-btn" class="add-to-cart-btn" style="background:#d4af37; color:#000; border:none; padding:12px; width:100%; border-radius:8px; font-weight:bold; cursor:pointer;">ADD TO CART</button>
         </div>
     </div>
 
-    <!-- سلة المشتريات الجانبية -->
+    <!-- Modal حسابي -->
+    <div id="account-modal" class="account-modal" onclick="toggleAccountModal()">
+        <div class="account-box" onclick="event.stopPropagation()">
+            <h3 style="color:#d4af37; margin-top:0;">حساب العميل</h3>
+            <p style="font-size:13px; color:#aaa;">سجل بياناتك لسهولة الطلب المباشر:</p>
+            <input type="text" id="acc-name" placeholder="الاسم الكامل">
+            <input type="tel" id="acc-phone" placeholder="رقم الهاتف (01111506902)">
+            <input type="text" id="acc-address" placeholder="العنوان بالتفصيل (المدينة، الشارع)">
+            <button onclick="saveAccountData()" style="background:#d4af37; color:#000; border:none; width:100%; padding:10px; border-radius:6px; font-weight:bold; margin-top:10px; cursor:pointer;">حفظ البيانات</button>
+        </div>
+    </div>
+
+    <!-- Modal المفضلة -->
+    <div id="wishlist-modal" class="wishlist-modal" onclick="toggleWishlistModal()">
+        <div class="wishlist-box" onclick="event.stopPropagation()">
+            <h3 style="color:#d4af37; margin-top:0;">المنتجات المفضلة ❤️</h3>
+            <div id="wishlist-items-container" style="max-height:300px; overflow-y:auto; margin-top:10px;"></div>
+            <button onclick="toggleWishlistModal()" style="background:#333; color:#fff; border:none; width:100%; padding:8px; border-radius:6px; margin-top:15px; cursor:pointer;">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- سلة المشتريات -->
     <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
     <aside id="cart-sidebar" class="cart-sidebar">
         <div class="cart-header">
@@ -113,52 +152,63 @@
         </div>
     </aside>
 
-    <!-- قسم السياسات والتوصيل (عربي منسق لوحده) -->
+    <!-- السياسات -->
     <section dir="rtl" style="background: #181818; padding: 40px 20px; border-top: 1px solid #333; color: #fff; margin-top: 40px; font-family: 'Cairo', sans-serif;">
         <div style="max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
             <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
                 <h3 style="color: #d4af37; margin-top: 0;">🚚 الشحن والتوصيل</h3>
-                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
-                    نقدم خدمة شحن سريعة لجميع محافظات مصر. يستغرق وقت التوصيل من <strong>5 إلى 7 أيام عمل</strong> من تأكيد الأوردر.
+                <p style="font-size: 15px; line-height: 1.8; color: #ddd;">
+                    تكلفة الشحن من <strong>60 إلى 70 جنيه</strong>، ويشمل محافظات: <strong>الجيزة، القاهرة، والقليوبية</strong>.
                 </p>
             </div>
             <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
-                <h3 style="color: #d4af37; margin-top: 0;">💳 تفاصيل الدفع والطلبات</h3>
-                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
-                    نظام الطلب يتطلب تحويل <strong>عربون 25%</strong> عبر إنستا باي أو محفظة كاش على الرقم: <span style="color:#d4af37; font-weight:bold; direction:ltr; display:inline-block;">01125009524</span> وباقي المبلغ عند الاستلام.
+                <h3 style="color: #d4af37; margin-top: 0;">💳 الدفع والطلبات</h3>
+                <p style="font-size: 15px; line-height: 1.8; color: #ddd;">
+                    الدفع متاح بمقدم أو تحويل عبر إنستا باي أو محفظة كاش على الرقم: <span style="color:#d4af37; font-weight:bold; direction:ltr; display:inline-block;">01111506902</span>
                 </p>
             </div>
             <div style="background: #222; padding: 25px; border-radius: 12px; border-right: 4px solid #d4af37;">
                 <h3 style="color: #d4af37; margin-top: 0;">🔄 سياسة الاستبدال</h3>
-                <p style="font-size: 16px; line-height: 1.8; color: #ddd;">
-                    ضمان رضا العملاء أولوية في أثر؛ يتيح المتجر إمكانية استبدال المنتجات خلال <strong>24 ساعة</strong> من تاريخ الاستلام.
+                <p style="font-size: 15px; line-height: 1.8; color: #ddd;">
+                    يتيح المتجر إمكانية استبدال المنتجات خلال <strong>24 ساعة</strong> من تاريخ الاستلام.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- قسم آراء العملاء -->
+    <!-- آراء العملاء -->
     <section dir="rtl" style="background: #121212; padding: 40px 20px; text-align: center; border-top: 1px solid #222; font-family: 'Cairo', sans-serif;">
-        <h2 style="color: #d4af37; margin-bottom: 30px;">⭐ آراء عملائنا في براند أثر</h2>
-        <div style="max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;" id="reviews-container">
+        <h2 style="color: #d4af37; margin-bottom: 25px;">⭐ آراء عملائنا في براند أثر</h2>
+        <div style="max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
             <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #333; text-align: right;">
-                <p style="color: #ddd; font-style: italic; font-size: 15px;">"انتظروا آراء عملائنا المميزين قريبًا جداً هنا ❤️"</p>
-                <span style="color: #d4af37; font-weight: bold; font-size: 14px;">— براند أثر</span>
+                <p style="color: #ddd; font-size: 14px; line-height: 1.7;">"الاوردر تحفة بجد والله انا مبهورة م الحلاوة بجد ربنا يباركلك ويرزقك بجد الحاجه جميله قوي وان شاء الله مش اخر تعامل وبجد مبهوره للمره المليون م الحلاوة والجمال ❤️❤️❤️❤️"</p>
+                <span style="color: #d4af37; font-weight: bold; font-size: 13px; display:block; margin-top:10px;">— عميلة متجر أثر (واتساب)</span>
+            </div>
+            <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #333; text-align: right;">
+                <p style="color: #ddd; font-size: 14px; line-height: 1.7;">"تسلم ايدك السلسله طلعت جميلة جدا وشكلها احلي من الصور والتعامل معاكو كان في منتهي الذوق واكيد ديه مش اخر مره ❤️❤️❤️"</p>
+                <span style="color: #d4af37; font-weight: bold; font-size: 13px; display:block; margin-top:10px;">— عميلة متجر أثر (واتساب)</span>
+            </div>
+            <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #333; text-align: right;">
+                <p style="color: #ddd; font-size: 14px; line-height: 1.7;">"التوليب قمر بجد شكله طبيعي 100% والباكدجينج شيك اوي.. والاسعار كمان حلوة اووي ومش مبالغ فيها إن شاء الله مش اخر تعامل معاكم ❤️"</p>
+                <span style="color: #d4af37; font-weight: bold; font-size: 13px; display:block; margin-top:10px;">— عميلة متجر أثر (واتساب)</span>
             </div>
         </div>
     </section>
 
     <!-- الفوتر -->
-    <footer style="background: #0d0d0d; padding: 30px 20px; text-align: center; border-top: 1px solid #222; color: #888;">
-        <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 25px; align-items: center; flex-wrap: wrap;">
-            <a href="https://instagram.com/athar_accessories.eg" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
-                📸 Instagram (@athar_accessories.eg)
+    <footer style="background: #0d0d0d; padding: 35px 20px; text-align: center; border-top: 1px solid #222; color: #888;">
+        <div class="social-icons-container">
+            <a href="https://tiktok.com/@athar_accessorise_x0" target="_blank" class="social-circle sc-tiktok" title="TikTok">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.68a6.33 6.33 0 0 0 10.86 4.49 6.3 6.3 0 0 0 1.83-4.49V8.58a8.17 8.17 0 0 0 4.86 1.55v-3.44a4.85 4.85 0 0 1-1-.00z"/></svg>
             </a>
-            <a href="https://tiktok.com/@athar_accessorise_x0" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
-                🎬 TikTok (@athar_accessorise_x0)
+            <a href="https://wa.me/201111506902" target="_blank" class="social-circle sc-whatsapp" title="WhatsApp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
             </a>
-            <a href="https://wa.me/201125009524" target="_blank" style="color: #28a745; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px;">
-                💬 WhatsApp (01125009524)
+            <a href="https://instagram.com/athar_accessories.eg" target="_blank" class="social-circle sc-instagram" title="Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" class="social-circle sc-facebook" title="Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.37 14.5 5 15.5 5H18V0h-3.808C10.59 0 9 1.581 9 4.615V8z"/></svg>
             </a>
         </div>
         <p style="font-size: 13px; margin: 0;">©️ 2026 ATHAR | أَثَر. All rights reserved.</p>
